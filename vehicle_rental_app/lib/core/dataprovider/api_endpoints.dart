@@ -6,4 +6,7 @@ class ApiEndpoints {
 
   static const String loginApi = '$baseUrl/api/v1/auth/login';
   static const String registerApi = '$baseUrl/api/v1/auth/register';
+  static const String availableCarApi =
+      '$baseUrl/api/v1/user/vehicles/available';
+  static const String bookCarApi = '$baseUrl/api/v1/user/bookVehicle';
 }

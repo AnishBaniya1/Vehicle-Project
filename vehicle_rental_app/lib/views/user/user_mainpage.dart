@@ -30,7 +30,7 @@ class _UserMainpageState extends State<UserMainpage> {
         height: 65,
         index: _currentIndex,
         backgroundColor: Colors.white,
-        color: Colors.black,
+        color: Colors.deepPurple,
         animationCurve: Curves.easeInOut,
         animationDuration: Duration(milliseconds: 500),
         onTap: (int index) {

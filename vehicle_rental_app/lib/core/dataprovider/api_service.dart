@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:vehicle_rental_app/core/services/secure_storage.dart';
 
@@ -93,12 +92,12 @@ class ApiService {
     required bool isWithoutToken,
   }) async {
     final headers = {"Content-Type": "application/json"};
-    // if (!isWithoutToken) {
-    //   final token = await _storage.readValue(key);
-    //   if (token != null && token.isNotEmpty) {
-    //     headers['Authorization'] = 'Bearer $token';
-    //   }
-    // }
+    if (!isWithoutToken) {
+      final token = await _storage.readValue('authtoken');
+      if (token != null && token.isNotEmpty) {
+        headers['Authorization'] = 'Bearer $token';
+      }
+    }
     return headers;
   }
 

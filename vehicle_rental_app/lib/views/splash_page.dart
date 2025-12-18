@@ -80,7 +80,7 @@ class _SplashPageState extends State<SplashPage> {
               SizedBox(height: 10),
               Text(
                 'Find your ride, anytime, anywhere!',
-                style: TextStyle(fontSize: 16, color: Colors.grey),
+                style: TextStyle(fontSize: 16, color: Colors.black),
               ),
               const SizedBox(height: 30),
               CircularProgressIndicator(color: Colors.black),
