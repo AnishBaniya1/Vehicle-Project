@@ -39,6 +39,8 @@ dependencies:
   provider: ^6.1.5+1
   curved_navigation_bar: ^1.0.6
   google_fonts: ^6.3.3
+  cached_network_image: ^3.4.1
+  flutter_svg: ^2.2.3
 
 dev_dependencies:
   flutter_test:

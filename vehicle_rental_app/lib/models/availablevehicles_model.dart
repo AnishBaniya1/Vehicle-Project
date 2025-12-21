@@ -1,5 +1,5 @@
-class AvailableVehiclesModel {
-  AvailableVehiclesModel({
+class AvailableVehicleModel {
+  AvailableVehicleModel({
     required this.success,
     required this.count,
     required this.data,
@@ -9,8 +9,8 @@ class AvailableVehiclesModel {
   final int? count;
   final List<Datum> data;
 
-  factory AvailableVehiclesModel.fromJson(Map<String, dynamic> json) {
-    return AvailableVehiclesModel(
+  factory AvailableVehicleModel.fromJson(Map<String, dynamic> json) {
+    return AvailableVehicleModel(
       success: json["success"],
       count: json["count"],
       data: json["data"] == null

@@ -1,5 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:vehicle_rental_app/views/user/user_historypage.dart';
 import 'package:vehicle_rental_app/views/user/user_homepage.dart';
 import 'package:vehicle_rental_app/views/user/user_profilepage.dart';
 
@@ -19,7 +20,11 @@ class _UserMainpageState extends State<UserMainpage> {
   void initState() {
     super.initState();
     //Initialize pages once
-    _pages = [const UserHomepage(), const UserProfilepage()];
+    _pages = [
+      const UserHomepage(),
+      const UserHistorypage(),
+      const UserProfilepage(),
+    ];
   }
 
   @override
@@ -40,7 +45,7 @@ class _UserMainpageState extends State<UserMainpage> {
         },
         items: [
           Icon(Icons.home_outlined, color: Colors.white),
-          // Icon(Icons.shopping_bag_outlined, color: Colors.white),
+          Icon(Icons.history, color: Colors.white),
           Icon(Icons.person_outline, color: Colors.white),
         ],
       ),

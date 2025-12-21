@@ -51,7 +51,7 @@ class BookingConfirmationSheet extends StatelessWidget {
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(
-          height: MediaQuery.of(context).size.height * 0.5,
+          height: MediaQuery.of(context).size.height * 0.6,
           padding: const EdgeInsets.all(20),
           decoration: const BoxDecoration(
             color: Colors.white,
@@ -176,7 +176,34 @@ class BookingConfirmationSheet extends StatelessWidget {
                   ],
                 ),
               ),
-              const Spacer(),
+              const SizedBox(height: 40),
+              // Done Button
+              Center(
+                child: SizedBox(
+                  width: 100,
+                  height: 30,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context); // Close bottom sheet
+                      Navigator.pop(context); // Go back to homepage
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.deepPurple,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text(
+                      'Done',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

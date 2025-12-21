@@ -26,7 +26,6 @@ class BookvehicleModel {
 
 class Data {
   Data({
-    required this.bookingId,
     required this.vehicleId,
     required this.startDate,
     required this.endDate,
@@ -34,7 +33,6 @@ class Data {
     required this.totalPrice,
   });
 
-  final String? bookingId;
   final String? vehicleId;
   final DateTime? startDate;
   final DateTime? endDate;
@@ -43,7 +41,6 @@ class Data {
 
   factory Data.fromJson(Map<String, dynamic> json) {
     return Data(
-      bookingId: json["bookingId"],
       vehicleId: json["vehicleId"],
       startDate: DateTime.tryParse(json["startDate"] ?? ""),
       endDate: DateTime.tryParse(json["endDate"] ?? ""),
@@ -53,7 +50,6 @@ class Data {
   }
 
   Map<String, dynamic> toJson() => {
-    "bookingId": bookingId,
     "vehicleId": vehicleId,
     "startDate": startDate?.toIso8601String(),
     "endDate": endDate?.toIso8601String(),

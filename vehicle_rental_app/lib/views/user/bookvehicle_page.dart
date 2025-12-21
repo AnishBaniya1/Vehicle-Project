@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vehicle_rental_app/core/providers/vehicle_provider.dart';
@@ -7,7 +8,6 @@ class BookvehiclePage extends StatefulWidget {
   const BookvehiclePage({
     super.key,
     required this.vehicleId,
-    required this.vehicleName,
     required this.vehicleBrand,
     required this.vehicleType,
     required this.pricePerDay,
@@ -15,7 +15,6 @@ class BookvehiclePage extends StatefulWidget {
   });
 
   final String vehicleId;
-  final String vehicleName;
   final String vehicleBrand;
   final String vehicleType;
   final int pricePerDay;
@@ -154,22 +153,34 @@ class _BookvehiclePageState extends State<BookvehiclePage> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: widget.imageUrl.isNotEmpty
-                      ? Image.network(
-                          widget.imageUrl,
-                          height: 250,
+                      ? CachedNetworkImage(
+                          imageUrl: widget.imageUrl,
+                          height: 120,
                           width: double.infinity,
                           fit: BoxFit.cover,
+                          placeholder: (context, url) => Container(
+                            height: 120,
+                            color: Colors.grey.shade200,
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
+                          errorWidget: (context, url, error) => Container(
+                            height: 120,
+                            color: Colors.grey.shade200,
+                            child: const Icon(Icons.car_rental),
+                          ),
                         )
                       : Container(
-                          height: 250,
+                          height: 120,
                           color: Colors.grey.shade200,
-                          child: const Icon(Icons.car_rental, size: 100),
+                          child: const Icon(Icons.car_rental),
                         ),
                 ),
                 const SizedBox(height: 20),
                 // Vehicle Name
                 Text(
-                  '${widget.vehicleBrand} ${widget.vehicleName}',
+                  widget.vehicleBrand,
                   style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,

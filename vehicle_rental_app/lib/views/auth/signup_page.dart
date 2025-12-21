@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vehicle_rental_app/core/providers/auth_provider.dart';
 import 'package:vehicle_rental_app/views/auth/login_page.dart';
+import 'package:vehicle_rental_app/views/user/otp_page.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -59,14 +60,22 @@ class _SignupPageState extends State<SignupPage> {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('User registered successfully!'),
+        SnackBar(
+          content: Text('User registered successfully and otp sent to email!'),
           backgroundColor: Colors.green,
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).size.height - 150,
+            left: 10,
+            right: 10,
+          ),
         ),
       );
 
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const LoginPage()),
+        MaterialPageRoute(
+          builder: (context) => OtpPage(email: _emailController.text.trim()),
+        ),
       );
     } catch (e) {
       if (!mounted) return;
@@ -200,7 +209,7 @@ class _SignupPageState extends State<SignupPage> {
                         height: 50,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red.shade400,
+                            backgroundColor: Colors.deepPurple,
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
@@ -253,7 +262,7 @@ class _SignupPageState extends State<SignupPage> {
                                 fontWeight: FontWeight.bold,
                                 color: authProvider.isLoading
                                     ? Colors.grey
-                                    : Colors.red.shade400,
+                                    : Colors.deepPurple,
                                 decoration: TextDecoration.underline,
                               ),
                               recognizer: authProvider.isLoading

@@ -24,4 +24,25 @@ class AuthService {
 
     return response;
   }
+
+  // Verify Email API call
+  Future<Map<String, dynamic>> verifyemail({required String body}) async {
+    final response = await _apiService.httpPost(
+      url: ApiEndpoints.verifyEmailApi,
+      body: body,
+      isWithoutToken: true,
+    );
+
+    return response;
+  }
+
+  // Get Current User
+  Future<Map<String, dynamic>> me() async {
+    final response = await _apiService.httpGet(
+      url: ApiEndpoints.getUserApi,
+      isWithoutToken: false,
+    );
+
+    return response;
+  }
 }

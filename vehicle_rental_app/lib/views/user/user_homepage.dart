@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vehicle_rental_app/core/providers/vehicle_provider.dart';
@@ -128,7 +129,6 @@ class _UserHomepageState extends State<UserHomepage> {
                               MaterialPageRoute(
                                 builder: (context) => BookvehiclePage(
                                   vehicleId: vehicle.id ?? '',
-                                  vehicleName: vehicle.name ?? 'Unknown',
                                   vehicleBrand: vehicle.brand ?? 'Unknown',
                                   vehicleType: vehicle.type ?? '',
                                   pricePerDay: vehicle.pricePerDay ?? 0,
@@ -160,11 +160,28 @@ class _UserHomepageState extends State<UserHomepage> {
                                     top: Radius.circular(12),
                                   ),
                                   child: vehicle.imageUrl.isNotEmpty
-                                      ? Image.network(
-                                          vehicle.imageUrl.first,
+                                      ? CachedNetworkImage(
+                                          imageUrl: vehicle.imageUrl.first,
                                           height: 120,
                                           width: double.infinity,
                                           fit: BoxFit.cover,
+                                          placeholder: (context, url) =>
+                                              Container(
+                                                height: 120,
+                                                color: Colors.grey.shade200,
+                                                child: const Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                ),
+                                              ),
+                                          errorWidget: (context, url, error) =>
+                                              Container(
+                                                height: 120,
+                                                color: Colors.grey.shade200,
+                                                child: const Icon(
+                                                  Icons.car_rental,
+                                                ),
+                                              ),
                                         )
                                       : Container(
                                           height: 120,

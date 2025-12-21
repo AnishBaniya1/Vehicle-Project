@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:vehicle_rental_app/core/services/secure_storage.dart';
@@ -26,9 +27,7 @@ class VehicleProvider extends ChangeNotifier {
     try {
       final response = await _vehicleService.availablevehicle();
 
-      AvailableVehiclesModel aVModel = AvailableVehiclesModel.fromJson(
-        response,
-      );
+      AvailableVehicleModel aVModel = AvailableVehicleModel.fromJson(response);
       _vehicles = aVModel.data;
       _isLoading = false;
       notifyListeners();
@@ -56,18 +55,6 @@ class VehicleProvider extends ChangeNotifier {
 
       final response = await _vehicleService.bookvehicle(body: body);
       BookvehicleModel bookModel = BookvehicleModel.fromJson(response);
-      final data = bookModel.data;
-      if (data != null) {
-        await _storageService.setValue('booking_status', data.status ?? '');
-        await _storageService.setValue(
-          'booking_start_date',
-          data.startDate?.toIso8601String() ?? '',
-        );
-        await _storageService.setValue(
-          'booking_end_date',
-          data.endDate?.toIso8601String() ?? '',
-        );
-      }
 
       _isLoading = false;
       notifyListeners();

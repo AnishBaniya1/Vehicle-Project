@@ -247,7 +247,7 @@ class _LoginPageState extends State<LoginPage> {
                         height: 50,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red.shade400,
+                            backgroundColor: Colors.deepPurple,
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
@@ -300,7 +300,7 @@ class _LoginPageState extends State<LoginPage> {
                                 fontWeight: FontWeight.bold,
                                 color: authProvider.isLoading
                                     ? Colors.grey
-                                    : Colors.red.shade400,
+                                    : Colors.deepPurple,
                                 decoration: TextDecoration.underline,
                               ),
                               recognizer: authProvider.isLoading
