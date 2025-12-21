@@ -5,7 +5,7 @@ import 'package:vehicle_rental_app/core/providers/auth_provider.dart';
 import 'package:vehicle_rental_app/core/resources/resource.dart';
 import 'package:vehicle_rental_app/core/services/secure_storage.dart';
 import 'package:vehicle_rental_app/views/auth/login_page.dart';
-import 'package:vehicle_rental_app/views/user/widget/custom_card.dart';
+import 'package:vehicle_rental_app/core/widgets/custom_card.dart';
 
 class UserProfilepage extends StatefulWidget {
   const UserProfilepage({super.key});

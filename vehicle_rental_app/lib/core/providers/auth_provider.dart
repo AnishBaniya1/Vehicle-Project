@@ -106,6 +106,7 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       _errorMessage = e.toString().replaceAll('Exception: ', '');
+      _isLoading = false;
       notifyListeners();
       rethrow;
     }

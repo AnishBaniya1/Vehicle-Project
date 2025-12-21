@@ -19,9 +19,8 @@ class _UserHomepageState extends State<UserHomepage> {
   void initState() {
     super.initState();
     _searchController = TextEditingController();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final provider = context.read<VehicleProvider>();
-      await provider.availablevehicle();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<VehicleProvider>().availablevehicle();
     });
   }
 

@@ -24,4 +24,14 @@ class VehicleService {
 
     return response;
   }
+
+  // Get User Booking History
+  Future<Map<String, dynamic>> userbookinghistory() async {
+    final response = await _apiService.httpGet(
+      url: ApiEndpoints.userBookingHistoryApi,
+      isWithoutToken: false,
+    );
+
+    return response;
+  }
 }
