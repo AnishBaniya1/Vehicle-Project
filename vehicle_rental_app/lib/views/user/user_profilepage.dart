@@ -126,7 +126,6 @@ class _UserProfilepageState extends State<UserProfilepage> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                SizedBox(height: screenHeight * 0.06),
                                 // Profile Image with animation
                                 Container(
                                   decoration: BoxDecoration(

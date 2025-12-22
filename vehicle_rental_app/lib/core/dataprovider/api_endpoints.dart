@@ -17,4 +17,5 @@ class ApiEndpoints {
   //admin
   static const String getAdminApi = '$baseUrl/api/v1/admin/me';
   static const String getAdminDashboardApi = '$baseUrl/api/v1/admin/dashboard';
+  static const String getVehicleApi ='$baseUrl/api/v1/admin/vehicles';
 }

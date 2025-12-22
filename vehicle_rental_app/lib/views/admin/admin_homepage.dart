@@ -148,9 +148,8 @@ class _AdminHomepageState extends State<AdminHomepage> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  SizedBox(height: screenHeight * 0.04),
                                   Container(
-                                    padding: EdgeInsets.all(16),
+                                    padding: EdgeInsets.all(10),
                                     decoration: BoxDecoration(
                                       color: Colors.white.withValues(
                                         alpha: 0.2,

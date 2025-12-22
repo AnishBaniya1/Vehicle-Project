@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vehicle_rental_app/core/providers/admin_provider.dart';
 import 'package:vehicle_rental_app/core/providers/auth_provider.dart';
 import 'package:vehicle_rental_app/core/providers/vehicle_provider.dart';
 import 'package:vehicle_rental_app/views/splash_page.dart';
@@ -18,6 +19,7 @@ class App extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => VehicleProvider()),
+        ChangeNotifierProvider(create: (_) => AdminProvider()),
       ],
       child: MaterialApp(debugShowCheckedModeBanner: false, home: SplashPage()),
     );

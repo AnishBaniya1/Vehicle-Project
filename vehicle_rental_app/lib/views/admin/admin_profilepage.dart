@@ -87,7 +87,7 @@ class _AdminProfilepageState extends State<AdminProfilepage> {
                     slivers: [
                       // Custom App Bar with gradient
                       SliverAppBar(
-                        expandedHeight: screenHeight * 0.35,
+                        expandedHeight: screenHeight * 0.30,
                         floating: false,
                         pinned: true,
                         backgroundColor: Colors.deepPurple,
@@ -119,7 +119,6 @@ class _AdminProfilepageState extends State<AdminProfilepage> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                SizedBox(height: screenHeight * 0.06),
                                 // Profile Image with animation
                                 Container(
                                   decoration: BoxDecoration(

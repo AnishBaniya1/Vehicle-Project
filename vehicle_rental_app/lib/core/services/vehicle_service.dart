@@ -34,4 +34,14 @@ class VehicleService {
 
     return response;
   }
+
+  // Get all Vehicles for admin
+  Future<Map<String, dynamic>> getvehicles() async {
+    final response = await _apiService.httpGet(
+      url: ApiEndpoints.getVehicleApi,
+      isWithoutToken: false,
+    );
+
+    return response;
+  }
 }
