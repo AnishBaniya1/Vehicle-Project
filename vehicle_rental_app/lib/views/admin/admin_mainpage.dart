@@ -30,7 +30,7 @@ class _AdminMainpageState extends State<AdminMainpage> {
         height: 65,
         index: _currentIndex,
         backgroundColor: Colors.white,
-        color: Colors.black,
+        color: Colors.deepPurple,
         animationCurve: Curves.easeInOut,
         animationDuration: const Duration(milliseconds: 500),
         onTap: (int index) {

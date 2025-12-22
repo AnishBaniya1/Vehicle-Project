@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:vehicle_rental_app/core/services/auth_service.dart';
 import 'package:vehicle_rental_app/core/services/secure_storage.dart';
+import 'package:vehicle_rental_app/models/admindashboard_model.dart';
+import 'package:vehicle_rental_app/models/adminprofile_model.dart';
 import 'package:vehicle_rental_app/models/loginresponse_model.dart';
 import 'package:vehicle_rental_app/models/registerresponse_model.dart';
 import 'package:vehicle_rental_app/models/userprofile_model.dart';
@@ -102,6 +104,90 @@ class AuthProvider extends ChangeNotifier {
       final user = userModel.data;
       await _storageService.setValue('name', user?.username ?? '');
       await _storageService.setValue('email', user?.email ?? '');
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = e.toString().replaceAll('Exception: ', '');
+      _isLoading = false;
+      notifyListeners();
+      rethrow;
+    }
+  }
+
+  Future<void> changepassword({
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+    try {
+      final body = jsonEncode({
+        'oldPassword': oldPassword,
+        'newPassword': newPassword,
+      });
+
+      await _authService.changepassword(body: body);
+
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = e.toString().replaceAll('Exception: ', '');
+      _isLoading = false;
+      notifyListeners();
+      rethrow;
+    }
+  }
+
+  //ADMIN SECTION
+  Future<void> admin() async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+    try {
+      final response = await _authService.admin();
+
+      AdminProfileModel adminModel = AdminProfileModel.fromJson(response);
+      final admin = adminModel.data;
+      await _storageService.setValue('aname', admin?.username ?? '');
+      await _storageService.setValue('aemail', admin?.email ?? '');
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = e.toString().replaceAll('Exception: ', '');
+      _isLoading = false;
+      notifyListeners();
+      rethrow;
+    }
+  }
+
+  Future<void> admindashboard() async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+    try {
+      final response = await _authService.admindashboard();
+
+      AdminDashboardModel dashboardModel = AdminDashboardModel.fromJson(
+        response,
+      );
+      final data = dashboardModel.data;
+      await _storageService.setValue(
+        'totalUsers',
+        data?.users.toString() ?? '0',
+      );
+      await _storageService.setValue(
+        'totalVehicles',
+        data?.vehicles.toString() ?? '0',
+      );
+      await _storageService.setValue(
+        'pendingBookings',
+        data?.pendingBookings.toString() ?? '0',
+      );
+      await _storageService.setValue(
+        'confirmedBookings',
+        data?.confirmedBookings.toString() ?? '0',
+      );
       _isLoading = false;
       notifyListeners();
     } catch (e) {

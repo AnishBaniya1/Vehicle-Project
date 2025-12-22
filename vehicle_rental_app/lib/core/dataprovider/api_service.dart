@@ -83,6 +83,27 @@ class ApiService {
     }
   }
 
+  //HTTP PATCH Request
+  Future<dynamic> httpPatch({
+    required String url,
+    required String body,
+    required bool isWithoutToken,
+  }) async {
+    try {
+      final headers = await _buildHeaders(isWithoutToken: isWithoutToken);
+
+      final response = await http.patch(
+        Uri.parse(url),
+        headers: headers,
+        body: body,
+      );
+
+      return _handleResponse(response);
+    } catch (e) {
+      throw Exception('PATCH request failed: $e');
+    }
+  }
+
   // ============================================
   // Private Helper Methods
   // ============================================

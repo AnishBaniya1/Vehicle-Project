@@ -12,4 +12,9 @@ class ApiEndpoints {
   static const String getUserApi = '$baseUrl/api/v1/user/me';
   static const String userBookingHistoryApi =
       '$baseUrl/api/v1/user/bookings/me';
+  static const String changePasswordApi = '$baseUrl/api/v1/user/updatePassword';
+
+  //admin
+  static const String getAdminApi = '$baseUrl/api/v1/admin/me';
+  static const String getAdminDashboardApi = '$baseUrl/api/v1/admin/dashboard';
 }

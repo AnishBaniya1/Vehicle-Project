@@ -45,4 +45,34 @@ class AuthService {
 
     return response;
   }
+
+  // Update Password Api
+  Future<Map<String, dynamic>> changepassword({required String body}) async {
+    final response = await _apiService.httpPatch(
+      url: ApiEndpoints.changePasswordApi,
+      body: body,
+      isWithoutToken: false,
+    );
+
+    return response;
+  }
+
+  //Get Admin Profile
+  Future<Map<String, dynamic>> admin() async {
+    final response = await _apiService.httpGet(
+      url: ApiEndpoints.getAdminApi,
+      isWithoutToken: false,
+    );
+
+    return response;
+  }
+
+  Future<Map<String, dynamic>> admindashboard() async {
+    final response = await _apiService.httpGet(
+      url: ApiEndpoints.getAdminDashboardApi,
+      isWithoutToken: false,
+    );
+
+    return response;
+  }
 }
