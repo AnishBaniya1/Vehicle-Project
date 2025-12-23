@@ -75,4 +75,13 @@ class AuthService {
 
     return response;
   }
+
+  Future<Map<String, dynamic>> getallusers() async {
+    final response = await _apiService.httpGet(
+      url: ApiEndpoints.getAllUserApi,
+      isWithoutToken: false,
+    );
+
+    return response;
+  }
 }

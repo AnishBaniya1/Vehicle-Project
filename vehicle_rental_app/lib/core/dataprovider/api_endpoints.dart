@@ -25,4 +25,13 @@ class ApiEndpoints {
   static String editCarApi(String vehicleId) =>
       '$baseUrl/api/v1/admin/car/$vehicleId';
   static const String addCarApi = '$baseUrl/api/v1/admin/addCar';
+  static const String getPendingApi =
+      '$baseUrl/api/v1/admin/pending-booked-vehicles';
+  static const String getApprovedApi =
+      '$baseUrl/api/v1/admin/bookings/approved';
+  static String approveBookingApi(int bookingId) =>
+      '$baseUrl/api/v1/admin/bookings/$bookingId/approve';
+  static String cancelBookingApi(int bookingId) =>
+      '$baseUrl/api/v1/admin/bookings/$bookingId/cancel';
+  static const String getAllUserApi = '$baseUrl/api/v1/admin/users';
 }

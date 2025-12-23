@@ -23,7 +23,7 @@ class _AdminMainpageState extends State<AdminMainpage> {
     //Initialize pages once
     _pages = [
       const AdminHomepage(),
-      const AdminBookingpage(),
+      const AdminBookingsPage(),
       const AdminVehiclepage(),
       const AdminProfilepage(),
     ];

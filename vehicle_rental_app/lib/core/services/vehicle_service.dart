@@ -85,4 +85,47 @@ class VehicleService {
     );
     return response;
   }
+
+
+  // Get pending Bookings for admin
+  Future<Map<String, dynamic>> getpendingbookings() async {
+    final response = await _apiService.httpGet(
+      url: ApiEndpoints.getPendingApi,
+      isWithoutToken: false,
+    );
+
+    return response;
+  }
+
+  // Get approved Bookings for admin
+  Future<Map<String, dynamic>> getapprovedbookings() async {
+    final response = await _apiService.httpGet(
+      url: ApiEndpoints.getApprovedApi,
+      isWithoutToken: false,
+    );
+
+    return response;
+  }
+
+  // Approve Booking
+  Future<Map<String, dynamic>> approvebooking({required int bookingId}) async {
+    final response = await _apiService.httpPatch(
+      url: ApiEndpoints.approveBookingApi(bookingId),
+      body: '{}',
+      isWithoutToken: false,
+    );
+
+    return response;
+  }
+
+  // Cancel Booking
+  Future<Map<String, dynamic>> cancelbooking({required int bookingId}) async {
+    final response = await _apiService.httpPut(
+      url: ApiEndpoints.cancelBookingApi(bookingId),
+      body: '{}',
+      isWithoutToken: false,
+    );
+
+    return response;
+  }
 }
