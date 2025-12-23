@@ -46,10 +46,50 @@ class ApiService {
     }
   }
 
+  //HTTP POST with Multipart (for file uploads)
+  Future<dynamic> httpPostMultipart({
+    required String url,
+    required Map<String, String> fields,
+    required List<String> filePaths,
+    required String fileFieldName,
+    required bool isWithoutToken,
+  }) async {
+    try {
+      var request = http.MultipartRequest('POST', Uri.parse(url));
+
+      // Add authorization header
+      if (!isWithoutToken) {
+        final token = await _storage.readValue('authtoken');
+        if (token != null && token.isNotEmpty) {
+          request.headers['Authorization'] = 'Bearer $token';
+        }
+      }
+      // Add text fields
+      fields.forEach((key, value) {
+        request.fields[key] = value;
+      });
+
+      // Add files
+      for (var path in filePaths) {
+        request.files.add(
+          await http.MultipartFile.fromPath(fileFieldName, path),
+        );
+      }
+
+      // Send request
+      var streamedResponse = await request.send();
+      var response = await http.Response.fromStream(streamedResponse);
+
+      return _handleResponse(response);
+    } catch (e) {
+      throw Exception('Multipart POST request failed: $e');
+    }
+  }
+
   //HTTP PUT Request
   Future<dynamic> httpPut({
     required String url,
-    required Map<String, dynamic> body,
+    required String body,
     required bool isWithoutToken,
   }) async {
     try {
@@ -58,7 +98,7 @@ class ApiService {
       final response = await http.put(
         Uri.parse(url),
         headers: headers,
-        body: jsonEncode(body),
+        body: body,
       );
 
       return _handleResponse(response);
@@ -70,7 +110,7 @@ class ApiService {
   //HTTP DELETE Request
   Future<dynamic> httpDelete({
     required String url,
-    bool isWithoutToken = false,
+    required bool isWithoutToken,
   }) async {
     try {
       final headers = await _buildHeaders(isWithoutToken: isWithoutToken);

@@ -44,4 +44,45 @@ class VehicleService {
 
     return response;
   }
+
+  //Delete Vehicle
+  Future<Map<String, dynamic>> deletevehicle({
+    required String vehicleId,
+  }) async {
+    final response = await _apiService.httpDelete(
+      url: ApiEndpoints.deleteCarApi(vehicleId),
+      isWithoutToken: false,
+    );
+
+    return response;
+  }
+
+  //Edit Vehicle
+  Future<Map<String, dynamic>> editvehicle({
+    required String vehicleId,
+    required String body,
+  }) async {
+    final response = await _apiService.httpPut(
+      body: body,
+      url: ApiEndpoints.editCarApi(vehicleId),
+      isWithoutToken: false,
+    );
+
+    return response;
+  }
+
+  //Add Vehicle with images (Multipart)
+  Future<Map<String, dynamic>> addvehicle({
+    required Map<String, String> fields,
+    required List<String> imagePaths,
+  }) async {
+    final response = await _apiService.httpPostMultipart(
+      url: ApiEndpoints.addCarApi,
+      fields: fields,
+      filePaths: imagePaths,
+      fileFieldName: 'images', // Backend field name for images
+      isWithoutToken: false,
+    );
+    return response;
+  }
 }

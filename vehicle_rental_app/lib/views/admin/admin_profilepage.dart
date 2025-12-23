@@ -184,18 +184,6 @@ class _AdminProfilepageState extends State<AdminProfilepage> {
                                 screenWidth: screenWidth,
                               ),
                               SizedBox(height: screenHeight * 0.03),
-                              // Security Section
-                              _buildSectionTitle('Security'),
-                              SizedBox(height: 12),
-                              // Change Password Card
-                              _buildActionCard(
-                                icon: Icons.lock_rounded,
-                                iconColor: Colors.green,
-                                title: 'Add Vehicle',
-                                subtitle: 'Vehicle',
-                                screenWidth: screenWidth,
-                                onTap: () {},
-                              ),
                               SizedBox(height: screenHeight * 0.03),
                               // Account Section
                               _buildSectionTitle('Account'),

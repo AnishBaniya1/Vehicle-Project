@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vehicle_rental_app/core/providers/admin_provider.dart';
+import 'package:vehicle_rental_app/views/admin/admin_addvehiclepage.dart';
+import 'package:vehicle_rental_app/views/admin/admin_editvehiclepage.dart';
 
 class AdminVehiclepage extends StatefulWidget {
   const AdminVehiclepage({super.key});
@@ -24,13 +26,23 @@ class _AdminVehiclepageState extends State<AdminVehiclepage> {
   }
 
   void _handleEdit(String vehicleId, String vehicleName) {
-    // Navigate to edit page
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Edit vehicle: $vehicleName'),
-        backgroundColor: Colors.blue,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    final vehicle = context.read<AdminProvider>().vehicles.firstWhere(
+      (v) => v.id == vehicleId,
+    );
+    // Navigate to edit page with vehicle data
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AdminEditvehiclepage(
+          vehicleId: vehicle.id ?? '',
+          vehiclename: vehicle.name ?? '',
+          vehicleBrand: vehicle.brand ?? '',
+          vehicleType: vehicle.type ?? '',
+          fuelType: vehicle.fuelType ?? '',
+          seats: vehicle.seats ?? 0,
+          pricePerDay: vehicle.pricePerDay ?? 0,
+          status: vehicle.status ?? 'available',
+        ),
       ),
     );
   }
@@ -60,19 +72,56 @@ class _AdminVehiclepageState extends State<AdminVehiclepage> {
             ),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.pop(context);
-              // Add delete API call here
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Deleted: $vehicleName'),
-                  backgroundColor: Colors.red,
-                  behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              );
+              try {
+                // Call delete API with vehicleId
+                await context.read<AdminProvider>().deletevehicle(
+                  vehicleId: vehicleId,
+                );
+
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Row(
+                        children: [
+                          Icon(Icons.check_circle, color: Colors.white),
+                          SizedBox(width: 12),
+                          Expanded(child: Text('Deleted: $vehicleName')),
+                        ],
+                      ),
+                      backgroundColor: Colors.green,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  );
+                }
+              } catch (e) {
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Row(
+                        children: [
+                          Icon(Icons.error_outline, color: Colors.white),
+                          SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              'Failed to delete: ${e.toString().replaceAll('Exception: ', '')}',
+                            ),
+                          ),
+                        ],
+                      ),
+                      backgroundColor: Colors.red,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  );
+                }
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
@@ -109,6 +158,18 @@ class _AdminVehiclepageState extends State<AdminVehiclepage> {
           ),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add_circle_outline, color: Colors.white, size: 28),
+            tooltip: 'Add Vehicle',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AdminAddvehiclepage()),
+              );
+            },
+          ),
+        ],
       ),
       body: Consumer<AdminProvider>(
         builder: (context, adminProvider, child) {
