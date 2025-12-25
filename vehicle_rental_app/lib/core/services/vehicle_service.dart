@@ -35,6 +35,16 @@ class VehicleService {
     return response;
   }
 
+  // Search for Vehicle
+  Future<Map<String, dynamic>> searchvehicle({required String search}) async {
+    final response = await _apiService.httpGet(
+      url: ApiEndpoints.searchCarApi(search),
+      isWithoutToken: false,
+    );
+
+    return response;
+  }
+
   // Get all Vehicles for admin
   Future<Map<String, dynamic>> getvehicles() async {
     final response = await _apiService.httpGet(
@@ -85,7 +95,6 @@ class VehicleService {
     );
     return response;
   }
-
 
   // Get pending Bookings for admin
   Future<Map<String, dynamic>> getpendingbookings() async {

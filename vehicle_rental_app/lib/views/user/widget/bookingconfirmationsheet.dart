@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart'; // ✅ Add this import
 import 'package:flutter/material.dart';
 import 'package:vehicle_rental_app/models/bookvehicle_model.dart';
 
@@ -90,25 +91,43 @@ class BookingConfirmationSheet extends StatelessWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: imageUrl.isNotEmpty
-                        ? Image.network(
-                            imageUrl,
+                        ? CachedNetworkImage(
+                            // ✅ Changed from Image.network
+                            imageUrl: imageUrl,
                             width: 80,
                             height: 80,
                             fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Container(
-                                width: 80,
-                                height: 80,
-                                color: Colors.grey.shade200,
-                                child: const Icon(Icons.car_rental),
-                              );
-                            },
+                            placeholder: (context, url) => Container(
+                              width: 80,
+                              height: 80,
+                              color: Colors.grey.shade200,
+                              child: const Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.deepPurple,
+                                  strokeWidth: 2,
+                                ),
+                              ),
+                            ),
+                            errorWidget: (context, url, error) => Container(
+                              width: 80,
+                              height: 80,
+                              color: Colors.grey.shade200,
+                              child: const Icon(
+                                Icons.car_rental,
+                                size: 40,
+                                color: Colors.grey,
+                              ),
+                            ),
                           )
                         : Container(
                             width: 80,
                             height: 80,
                             color: Colors.grey.shade200,
-                            child: const Icon(Icons.car_rental),
+                            child: const Icon(
+                              Icons.car_rental,
+                              size: 40,
+                              color: Colors.grey,
+                            ),
                           ),
                   ),
                   const SizedBox(width: 15),
@@ -117,7 +136,7 @@ class BookingConfirmationSheet extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '$vehicleBrand ',
+                          vehicleBrand,
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -177,11 +196,12 @@ class BookingConfirmationSheet extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 40),
+
               // Done Button
               Center(
                 child: SizedBox(
-                  width: 100,
-                  height: 30,
+                  width: double.infinity,
+                  height: 50,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context); // Close bottom sheet

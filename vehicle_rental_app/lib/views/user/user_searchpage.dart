@@ -2,56 +2,27 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vehicle_rental_app/core/providers/vehicle_provider.dart';
-import 'package:vehicle_rental_app/core/resources/resource.dart';
 import 'package:vehicle_rental_app/views/user/bookvehicle_page.dart';
-import 'package:vehicle_rental_app/views/user/user_searchpage.dart'; // ✅ Add import
 
-class UserHomepage extends StatefulWidget {
-  const UserHomepage({super.key});
+class UserSearchpage extends StatefulWidget {
+  const UserSearchpage({super.key, required this.searchQuery});
+
+  final String searchQuery;
 
   @override
-  State<UserHomepage> createState() => _UserHomepageState();
+  State<UserSearchpage> createState() => _UserSearchpageState();
 }
 
-class _UserHomepageState extends State<UserHomepage> {
-  late final TextEditingController _searchController;
-
+class _UserSearchpageState extends State<UserSearchpage> {
   @override
   void initState() {
     super.initState();
-    _searchController = TextEditingController();
+    // ✅ Trigger search when page loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<VehicleProvider>().availablevehicle();
+      context.read<VehicleProvider>().searchvehicle(
+            vehiclename: widget.searchQuery,
+          );
     });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _searchController.dispose();
-  }
-
-  // ✅ Updated search handler
-  Future<void> _handlesearch() async {
-    final query = _searchController.text.trim();
-
-    if (query.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter a vehicle name to search'),
-          backgroundColor: Colors.orange,
-        ),
-      );
-      return;
-    }
-
-    // Navigate to search page with query
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => UserSearchpage(searchQuery: query),
-      ),
-    );
   }
 
   @override
@@ -59,58 +30,29 @@ class _UserHomepageState extends State<UserHomepage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
-        title: Center(
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.7,
-            child: Container(
-              height: 45,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: TextFormField(
-                controller: _searchController,
-                textInputAction: TextInputAction.search, // ✅ Changed to search
-                onFieldSubmitted: (_) => _handlesearch(),
-                onChanged: (value) {
-                  setState(() {}); // Required: to show/hide clear button
-                },
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: const BorderSide(color: Colors.grey, width: 1),
-                  ),
-                  hintText: 'Search Vehicles...',
-                  prefixIcon: IconButton(
-                    icon: const Icon(Icons.search),
-                    onPressed: _handlesearch, // ✅ Added tap to search
-                  ),
-                  suffixIcon: _searchController.text.isNotEmpty
-                      ? IconButton(
-                          icon: const Icon(Icons.clear),
-                          onPressed: () {
-                            setState(() {
-                              _searchController.clear();
-                            });
-                          },
-                        )
-                      : null,
-                  contentPadding: const EdgeInsets.symmetric(vertical: 12),
-                ),
-              ),
-            ),
+        title: Text(
+          'Search: "${widget.searchQuery}"',
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: SafeArea(
         child: Consumer<VehicleProvider>(
           builder: (context, vehicleProvider, child) {
+            // Loading State
             if (vehicleProvider.isLoading) {
               return const Center(
                 child: CircularProgressIndicator(color: Colors.deepPurple),
               );
             }
 
+            // Error State
             if (vehicleProvider.errorMessage != null) {
               return Center(
                 child: Column(
@@ -132,7 +74,11 @@ class _UserHomepageState extends State<UserHomepage> {
                     ),
                     const SizedBox(height: 16),
                     ElevatedButton.icon(
-                      onPressed: () => vehicleProvider.availablevehicle(),
+                      onPressed: () {
+                        vehicleProvider.searchvehicle(
+                          vehiclename: widget.searchQuery,
+                        );
+                      },
                       icon: const Icon(Icons.refresh),
                       label: const Text('Retry'),
                       style: ElevatedButton.styleFrom(
@@ -144,61 +90,107 @@ class _UserHomepageState extends State<UserHomepage> {
               );
             }
 
-            final vehicles = vehicleProvider.vehicles;
+            final searchResults = vehicleProvider.searchResults;
 
-            if (vehicles.isEmpty) {
-              return const Center(
+            // Empty State
+            if (searchResults.isEmpty) {
+              return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
-                      Icons.directions_car_outlined,
-                      size: 64,
-                      color: Colors.grey,
+                      Icons.search_off,
+                      size: 80,
+                      color: Colors.grey[400],
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Text(
-                      'No vehicles available',
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                      'No vehicles found for',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '"${widget.searchQuery}"',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.deepPurple,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    ElevatedButton.icon(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.arrow_back),
+                      label: const Text('Go Back'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.deepPurple,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 12,
+                        ),
+                      ),
                     ),
                   ],
                 ),
               );
             }
 
+            // Results Found
             return RefreshIndicator(
-              onRefresh: () => vehicleProvider.availablevehicle(),
+              onRefresh: () => vehicleProvider.searchvehicle(
+                vehiclename: widget.searchQuery,
+              ),
               color: Colors.deepPurple,
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 15, left: 10, right: 10),
+                  padding: const EdgeInsets.all(10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Image.asset(AppImage.homeImg),
-                      const SizedBox(height: 20),
-                      const Text(
-                        'Popular Vehicles',
-                        style: TextStyle(
-                          fontSize: 23,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.deepPurple,
+                      // Results Count
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 12,
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.search,
+                              color: Colors.deepPurple,
+                              size: 24,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              '${searchResults.length} result${searchResults.length > 1 ? 's' : ''} found',
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.deepPurple,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(height: 10),
+
+                      // Grid View
                       GridView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10,
-                              childAspectRatio: 0.75,
-                            ),
-                        itemCount: vehicles.length,
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          childAspectRatio: 0.75,
+                        ),
+                        itemCount: searchResults.length,
                         itemBuilder: (context, index) {
-                          final vehicle = vehicles[index];
+                          final vehicle = searchResults[index];
                           return GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -244,30 +236,40 @@ class _UserHomepageState extends State<UserHomepage> {
                                             fit: BoxFit.cover,
                                             placeholder: (context, url) =>
                                                 Container(
-                                                  height: 120,
-                                                  color: Colors.grey.shade200,
-                                                  child: const Center(
-                                                    child:
-                                                        CircularProgressIndicator(),
-                                                  ),
+                                              height: 120,
+                                              color: Colors.grey.shade200,
+                                              child: const Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  color: Colors.deepPurple,
+                                                  strokeWidth: 2,
                                                 ),
+                                              ),
+                                            ),
                                             errorWidget:
                                                 (context, url, error) =>
                                                     Container(
-                                                      height: 120,
-                                                      color:
-                                                          Colors.grey.shade200,
-                                                      child: const Icon(
-                                                        Icons.car_rental,
-                                                      ),
-                                                    ),
+                                              height: 120,
+                                              color: Colors.grey.shade200,
+                                              child: const Icon(
+                                                Icons.car_rental,
+                                                size: 40,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
                                           )
                                         : Container(
                                             height: 120,
                                             color: Colors.grey.shade200,
-                                            child: const Icon(Icons.car_rental),
+                                            child: const Icon(
+                                              Icons.car_rental,
+                                              size: 40,
+                                              color: Colors.grey,
+                                            ),
                                           ),
                                   ),
+                                  
+                                  // Vehicle Details
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Column(
@@ -291,9 +293,8 @@ class _UserHomepageState extends State<UserHomepage> {
                                           ),
                                           decoration: BoxDecoration(
                                             color: Colors.deepPurple.shade100,
-                                            borderRadius: BorderRadius.circular(
-                                              12,
-                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(12),
                                           ),
                                           child: Text(
                                             vehicle.type ?? '',
@@ -309,6 +310,7 @@ class _UserHomepageState extends State<UserHomepage> {
                                           style: TextStyle(
                                             color: Colors.grey.shade700,
                                             fontSize: 14,
+                                            fontWeight: FontWeight.w600,
                                           ),
                                         ),
                                       ],

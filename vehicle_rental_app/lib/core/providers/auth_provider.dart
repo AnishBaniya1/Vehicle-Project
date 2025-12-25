@@ -142,6 +142,71 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> forgetpassword({required String email}) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+    try {
+      final body = jsonEncode({'email': email});
+
+      await _authService.forgetpassword(body: body);
+
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = e.toString().replaceAll('Exception: ', '');
+      _isLoading = false;
+      notifyListeners();
+      rethrow;
+    }
+  }
+
+  Future<void> verifyotp({required String email, required String otp}) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+    try {
+      final body = jsonEncode({'email': email, 'otp': otp});
+
+      await _authService.verifyotp(body: body);
+
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = e.toString().replaceAll('Exception: ', '');
+      _isLoading = false;
+      notifyListeners();
+      rethrow;
+    }
+  }
+
+  Future<void> setnewpass({
+    required String email,
+    required String newpassword,
+    required String confirmpassword,
+  }) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+    try {
+      final body = jsonEncode({
+        'email': email,
+        'newPassword': newpassword,
+        'confirmPassword': confirmpassword,
+      });
+
+      await _authService.setnewpass(body: body);
+
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = e.toString().replaceAll('Exception: ', '');
+      _isLoading = false;
+      notifyListeners();
+      rethrow;
+    }
+  }
+
   //ADMIN SECTION
   Future<void> admin() async {
     _isLoading = true;

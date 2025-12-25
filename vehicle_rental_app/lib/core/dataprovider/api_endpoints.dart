@@ -10,11 +10,16 @@ class ApiEndpoints {
   static const String verifyEmailApi = '$baseUrl/api/v1/auth/verify-email';
   static const String availableCarApi =
       '$baseUrl/api/v1/user/vehicles/available';
+  static String searchCarApi(String search) =>
+      '$availableCarApi?search=${Uri.encodeComponent(search)}';
   static const String bookCarApi = '$baseUrl/api/v1/user/bookVehicle';
   static const String getUserApi = '$baseUrl/api/v1/user/me';
   static const String userBookingHistoryApi =
       '$baseUrl/api/v1/user/bookings/me';
   static const String changePasswordApi = '$baseUrl/api/v1/user/updatePassword';
+  static const String forgetPassordApi = '$baseUrl/api/v1/auth/forget-password';
+  static const String verifyotpApi = '$baseUrl/api/v1/auth/verify-otp';
+  static const String setNewPassApi = '$baseUrl/api/v1/auth/set-new-password';
 
   //admin
   static const String getAdminApi = '$baseUrl/api/v1/admin/me';

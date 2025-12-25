@@ -5,17 +5,20 @@ import 'package:vehicle_rental_app/models/availablevehicles_model.dart';
 import 'package:vehicle_rental_app/models/bookvehicle_model.dart';
 import 'package:vehicle_rental_app/models/userbookinghistory_model.dart'
     as history;
+import 'package:vehicle_rental_app/models/search_model.dart' as search;
 
 class VehicleProvider extends ChangeNotifier {
   final VehicleService _vehicleService = VehicleService();
   List<Datum> _vehicles = [];
   List<history.Datum> _bookings = [];
+  List<search.Datum> _searchResults = [];
 
   bool _isLoading = false;
   String? _errorMessage;
 
   List<Datum> get vehicles => _vehicles;
   List<history.Datum> get bookings => _bookings;
+  List<search.Datum> get searchResults => _searchResults;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
@@ -83,6 +86,27 @@ class VehicleProvider extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       _errorMessage = e.toString().replaceAll('Exception: ', '');
+      notifyListeners();
+      rethrow;
+    }
+  }
+
+  Future<void> searchvehicle({required String vehiclename}) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+    try {
+      final response = await _vehicleService.searchvehicle(search: vehiclename);
+
+      search.SearchModel searchModel = search.SearchModel.fromJson(response);
+
+      _searchResults = searchModel.data;
+
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = e.toString().replaceAll('Exception: ', '');
+      _isLoading = false;
       notifyListeners();
       rethrow;
     }

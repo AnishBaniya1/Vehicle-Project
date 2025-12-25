@@ -5,6 +5,7 @@ import 'package:vehicle_rental_app/core/providers/auth_provider.dart';
 import 'package:vehicle_rental_app/core/services/secure_storage.dart';
 import 'package:vehicle_rental_app/views/admin/admin_mainpage.dart';
 import 'package:vehicle_rental_app/views/auth/signup_page.dart';
+import 'package:vehicle_rental_app/views/user/user_forgetpasswordpage.dart';
 import 'package:vehicle_rental_app/views/user/user_mainpage.dart';
 
 class LoginPage extends StatefulWidget {
@@ -116,9 +117,9 @@ class _LoginPageState extends State<LoginPage> {
 
   //// Navigate to forgot password page
   void _navigateToForgotPassword() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Forgot Password - Coming Soon')),
-    );
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (context) => UserForgetpasswordpage()));
   }
 
   void _navigateToSignUp() {

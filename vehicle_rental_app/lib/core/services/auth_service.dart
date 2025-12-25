@@ -57,6 +57,39 @@ class AuthService {
     return response;
   }
 
+  // Forget Password Api
+  Future<Map<String, dynamic>> forgetpassword({required String body}) async {
+    final response = await _apiService.httpPost(
+      url: ApiEndpoints.forgetPassordApi,
+      body: body,
+      isWithoutToken: false,
+    );
+
+    return response;
+  }
+
+  // Verify otp to change password
+  Future<Map<String, dynamic>> verifyotp({required String body}) async {
+    final response = await _apiService.httpPost(
+      url: ApiEndpoints.verifyotpApi,
+      body: body,
+      isWithoutToken: false,
+    );
+
+    return response;
+  }
+
+  // Set New Password
+  Future<Map<String, dynamic>> setnewpass({required String body}) async {
+    final response = await _apiService.httpPost(
+      url: ApiEndpoints.setNewPassApi,
+      body: body,
+      isWithoutToken: false,
+    );
+
+    return response;
+  }
+
   //Get Admin Profile
   Future<Map<String, dynamic>> admin() async {
     final response = await _apiService.httpGet(
