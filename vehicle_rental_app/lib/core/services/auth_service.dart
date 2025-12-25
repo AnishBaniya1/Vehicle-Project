@@ -84,4 +84,13 @@ class AuthService {
 
     return response;
   }
+
+  Future<Map<String, dynamic>> deleteuser({required String userId}) async {
+    final response = await _apiService.httpDelete(
+      url: ApiEndpoints.deleteUserApi(userId),
+      isWithoutToken: false,
+    );
+
+    return response;
+  }
 }

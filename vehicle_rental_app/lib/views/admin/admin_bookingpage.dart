@@ -135,18 +135,6 @@ class _AdminBookingsPageState extends State<AdminBookingsPage>
                                 horizontal: 8,
                                 vertical: 2,
                               ),
-                              decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(
-                                '${provider.approvedBookings.length}',
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
                             ),
                         ],
                       ),

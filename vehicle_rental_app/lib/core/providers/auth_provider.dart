@@ -4,6 +4,7 @@ import 'package:vehicle_rental_app/core/services/auth_service.dart';
 import 'package:vehicle_rental_app/core/services/secure_storage.dart';
 import 'package:vehicle_rental_app/models/admindashboard_model.dart';
 import 'package:vehicle_rental_app/models/adminprofile_model.dart';
+import 'package:vehicle_rental_app/models/getallusers_model.dart' as all_users;
 import 'package:vehicle_rental_app/models/loginresponse_model.dart';
 import 'package:vehicle_rental_app/models/registerresponse_model.dart';
 import 'package:vehicle_rental_app/models/userprofile_model.dart';
@@ -14,9 +15,11 @@ class AuthProvider extends ChangeNotifier {
 
   bool _isLoading = false;
   String? _errorMessage;
+  List<all_users.User> _allUsers = [];
 
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
+  List<all_users.User> get allUsers => _allUsers;
 
   Future<void> login({required String email, required String password}) async {
     _isLoading = true;
@@ -188,6 +191,45 @@ class AuthProvider extends ChangeNotifier {
         'confirmedBookings',
         data?.confirmedBookings.toString() ?? '0',
       );
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = e.toString().replaceAll('Exception: ', '');
+      _isLoading = false;
+      notifyListeners();
+      rethrow;
+    }
+  }
+
+  Future<void> getallusers() async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+    try {
+      final response = await _authService.getallusers();
+
+      all_users.GetAllUsersModel usersModel =
+          all_users.GetAllUsersModel.fromJson(response);
+      _allUsers = usersModel.data?.users ?? [];
+
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = e.toString().replaceAll('Exception: ', '');
+      _isLoading = false;
+      notifyListeners();
+      rethrow;
+    }
+  }
+
+  Future<void> deleteuser({required String userId}) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+    try {
+      await _authService.deleteuser(userId: userId);
+      _allUsers.removeWhere((user) => user.id == userId);
+
       _isLoading = false;
       notifyListeners();
     } catch (e) {

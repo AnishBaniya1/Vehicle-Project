@@ -373,6 +373,7 @@ class BookingCard extends StatelessWidget {
               try {
                 await context.read<BookingProvider>().approveBooking(bookingId);
                 if (context.mounted) {
+                  await context.read<BookingProvider>().getPendingBookings();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
@@ -433,6 +434,7 @@ class BookingCard extends StatelessWidget {
               try {
                 await context.read<BookingProvider>().cancelBooking(bookingId);
                 if (context.mounted) {
+                  await context.read<BookingProvider>().getPendingBookings();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:vehicle_rental_app/views/admin/admin_bookingpage.dart';
 import 'package:vehicle_rental_app/views/admin/admin_homepage.dart';
 import 'package:vehicle_rental_app/views/admin/admin_profilepage.dart';
+import 'package:vehicle_rental_app/views/admin/admin_userspage.dart';
 import 'package:vehicle_rental_app/views/admin/admin_vehiclepage.dart';
 
 class AdminMainpage extends StatefulWidget {
@@ -23,6 +24,7 @@ class _AdminMainpageState extends State<AdminMainpage> {
     //Initialize pages once
     _pages = [
       const AdminHomepage(),
+      const AdminUserspage(),
       const AdminBookingsPage(),
       const AdminVehiclepage(),
       const AdminProfilepage(),
@@ -47,6 +49,7 @@ class _AdminMainpageState extends State<AdminMainpage> {
         },
         items: const [
           Icon(Icons.home_outlined, color: Colors.white),
+          Icon(Icons.people_outlined, color: Colors.white),
           Icon(Icons.calendar_month, color: Colors.white),
           Icon(Icons.directions_car, color: Colors.white),
           Icon(Icons.person_outline, color: Colors.white),

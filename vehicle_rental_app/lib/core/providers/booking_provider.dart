@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:vehicle_rental_app/core/services/vehicle_service.dart';
-import 'package:vehicle_rental_app/models/allbookings_model.dart' as all;
 import 'package:vehicle_rental_app/models/pendingbooking_model.dart' as pending;
 import 'package:vehicle_rental_app/models/approvedbooking_model.dart'
     as approved;
@@ -9,7 +8,6 @@ class BookingProvider extends ChangeNotifier {
   final VehicleService _vehicleService = VehicleService();
 
   // Separate lists for each booking type
-  List<all.Datum> _allBookings = [];
   List<pending.Datum> _pendingBookings = [];
   List<approved.Datum> _approvedBookings = [];
 
@@ -17,7 +15,6 @@ class BookingProvider extends ChangeNotifier {
   String? _errorMessage;
 
   // Getters
-  List<all.Datum> get allBookings => _allBookings;
   List<pending.Datum> get pendingBookings => _pendingBookings;
   List<approved.Datum> get approvedBookings => _approvedBookings;
   bool get isLoading => _isLoading;

@@ -34,4 +34,6 @@ class ApiEndpoints {
   static String cancelBookingApi(int bookingId) =>
       '$baseUrl/api/v1/admin/bookings/$bookingId/cancel';
   static const String getAllUserApi = '$baseUrl/api/v1/admin/users';
+  static String deleteUserApi(String userId) =>
+      '$baseUrl/api/v1/admin/user/$userId';
 }
